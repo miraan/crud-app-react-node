@@ -34,7 +34,9 @@ class OwnTripsPage extends React.Component<Props, State> {
         <Grid>
           <Row>
             <Col md={12}>
+              <hr />
               <h1>Own Trips</h1>
+              <hr />
             </Col>
           </Row>
           <Row>

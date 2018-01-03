@@ -4,11 +4,12 @@ import React from 'react'
 import TripForm from './TripForm'
 import Authenticator from '../util/Authenticator'
 import { daysBetween } from '../util/dates'
-import { Panel, Grid, Row, Col, Button } from 'react-bootstrap'
+import { Panel, Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { dateToString } from '../util/dates'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as tripActions from '../actions/tripActions'
+import history from '../util/history'
 
 import type { Trip, CreateTripPayload } from '../util/Api'
 import type { ApplicationState } from '../reducers'
@@ -81,18 +82,21 @@ class TripPanel extends React.Component<Props, State> {
           </Col>
         </Row>
         <Row>
-          <Col md={1}>
-            <Button
-              onClick={() => this.setState({ isEditing: true })}>
-              Edit
-            </Button>
-          </Col>
-          <Col md={1}>
-            <Button
-              bsStyle='danger'
-              onClick={() => this.props.actions.deleteTrip(this.props.trip.id)}>
-              Delete
-            </Button>
+          <Col md={12}>
+            <ButtonGroup bsSize='large'>
+              <Button
+                onClick={() => this.setState({ isEditing: true })}>
+                Edit
+              </Button>
+              <Button
+                onClick={() => this.props.actions.deleteTrip(this.props.trip.id)}>
+                Delete
+              </Button>
+              <Button
+                onClick={() => history.push('/ownTrips/new')}>
+                Create New Trip
+              </Button>
+            </ButtonGroup>
           </Col>
         </Row>
       </Grid>

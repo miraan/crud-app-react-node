@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { Panel, Button, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
+import { Panel, Button, ButtonGroup, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
 import CreateReactClass from 'create-react-class'
 import DatePicker from 'react-bootstrap-date-picker'
 
@@ -92,19 +92,21 @@ const TripForm = ({
       </FormGroup>
     </form>
     <hr />
-    <Button
-      bsStyle='primary'
-      onClick={onSubmitButtonClick}
-      disabled={isSubmitButtonDisabled}>
-      {editing ? 'Save' : 'Create'}
-    </Button>
-    {editing
-    ? (<Button
-        onClick={onCancelButtonClick}>
-        Cancel
-      </Button>)
-    : null
-    }
+    <ButtonGroup bsSize='large'>
+      <Button
+        bsStyle='primary'
+        onClick={onSubmitButtonClick}
+        disabled={isSubmitButtonDisabled}>
+        {editing ? 'Save' : 'Create'}
+      </Button>
+      {editing
+      ? (<Button
+          onClick={onCancelButtonClick}>
+          Cancel
+        </Button>)
+      : null
+      }
+    </ButtonGroup>
   </Panel>
 )
 

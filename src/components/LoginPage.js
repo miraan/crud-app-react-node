@@ -25,10 +25,12 @@ class LoginPage extends React.Component<Props, State> {
     return (
       <Jumbotron>
         <Grid>
+          <hr />
           <h1>Welcome to Trip Planner</h1>
+          <hr />
           <FacebookLogin
             appId={AppConfigurationObject.facebookAppId}
-            autoLoad={true}
+            autoLoad={false}
             fields={AppConfigurationObject.facebookProfileFields}
             callback={(response) => {
               const facebookAccessToken: string = response.accessToken
