@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "create-react-class": "^15.6.2",
     "flow-bin": "^0.62.0",
     "history": "^4.7.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",
+    "react-bootstrap-date-picker": "github:pushtell/react-bootstrap-date-picker#f622dc8872dd180324ba5d3c295d009848f5814b",
     "react-dom": "^16.2.0",
     "react-facebook-login": "^3.7.2",
     "react-redux": "^5.0.6",

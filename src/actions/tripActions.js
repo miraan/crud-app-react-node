@@ -3,7 +3,7 @@
 import Api from '../util/Api'
 
 import type { Dispatch } from '.'
-import type { Trip, CreateOwnTripPayload } from '../util/Api'
+import type { Trip, CreateTripPayload } from '../util/Api'
 
 export type TripAction = GetOwnTripsSuccessAction | CreateTripSuccessAction
 
@@ -36,7 +36,6 @@ export function createTripSuccess(trip: Trip): CreateTripSuccessAction {
 export function getOwnTrips() {
   return function(dispatch: Dispatch) {
     Api.getOwnTrips().then(getOwnTripsResponse => {
-      console.log(getOwnTripsResponse)
       dispatch(getOwnTripsSuccess(getOwnTripsResponse.trips))
     })
     .catch(error => {
@@ -46,15 +45,15 @@ export function getOwnTrips() {
   }
 }
 
-export function createOwnTrip(payload: CreateOwnTripPayload) {
+export function createTrip(payload: CreateTripPayload) {
   return function(dispatch: Dispatch) {
-    Api.createOwnTrip(payload).then(createTripResponse => {
+    Api.createTrip(payload).then(createTripResponse => {
       console.log(createTripResponse)
       dispatch(createTripSuccess(createTripResponse.trip))
     })
     .catch(error => {
       // TODO: dispatch error action instead
-      console.log('createOwnTrip action error: ' + error)
+      console.log('createTrip action error: ' + error)
     })
   }
 }

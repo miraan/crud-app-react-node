@@ -4,12 +4,13 @@ import React from 'react'
 import { Jumbotron, Grid, Row, Col, ListGroup, ListGroupItem, Panel, Button } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import Authenticator from '../util/Authenticator'
 import * as tripActions from '../actions/tripActions'
 import { dateToString, daysUntil } from '../util/dates'
 import NewTripPanel from './NewTripPanel'
+import TripPanel from './TripPanel'
 
 import type { ApplicationState } from '../reducers'
 import type { Trip } from '../util/Api'
@@ -43,8 +44,11 @@ class OwnTripsPage extends React.Component<Props, State> {
               </ListGroup>
             </Col>
             <Col md={8}>
-              <Route exact path={this.props.match.url} render={this._renderDefaultPanel} />
-              <Route path={`${this.props.match.url}/new`} component={NewTripPanel} />
+              <Switch>
+                <Route exact path={this.props.match.url} render={this._renderDefaultPanel} />
+                <Route path={`${this.props.match.url}/new`} component={NewTripPanel} />
+                <Route path={`${this.props.match.url}/:tripId`} component={TripPanel} />
+              </Switch>
             </Col>
           </Row>
         </Grid>
@@ -61,11 +65,14 @@ class OwnTripsPage extends React.Component<Props, State> {
       )
     }
     return this.props.trips.map(trip => (
-      <ListGroupItem header={trip.destination}>
-        {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}
-        &nbsp;(daysUntil(new Date(trip.endDate))
-        {daysUntil(new Date(trip.endDate)) > 0 ? ' Days Away' : ' Days Ago'})
-      </ListGroupItem>
+      <LinkContainer to={`${this.props.match.url}/${trip.id}`} key={trip.id}>
+        <ListGroupItem header={trip.destination}>
+          {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}
+          <br />
+          ({daysUntil(new Date(trip.startDate))}
+          {daysUntil(new Date(trip.startDate)) > 0 ? ' Days Away' : ' Days Ago'})
+        </ListGroupItem>
+      </LinkContainer>
     ))
   }
 
@@ -87,10 +94,6 @@ class OwnTripsPage extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: ApplicationState) {
-  console.log('Trips state:')
-  console.log(state.trips)
-  console.log('whole state:')
-  console.log(state)
   return {
     trips: state.trips
   }

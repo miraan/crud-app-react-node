@@ -3,6 +3,8 @@
 import Authenticator from './Authenticator'
 import AppConfigurationObject from '../configuration'
 
+type ToOptionalType = <V>(V) => ?V
+
 type User = {
   id: string,
   firstName: string,
@@ -21,10 +23,16 @@ export type Trip = {
   comment: string
 }
 
-export type CreateOwnTripPayload = $Diff<Trip, {
+export type CreateTripPayload = $Diff<Trip, {
   id: string,
-  userId: string,
 }>
+
+export type UpdateTripPayload = {
+  ...$ObjMap<$Diff<Trip, {
+    id: string,
+    userId: string,
+  }>, ToOptionalType>
+}
 
 export type LoginResponse = {
   token: string,
@@ -39,52 +47,53 @@ type CreateTripResponse = {
   trip: Trip
 }
 
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
 export default class Api {
 
   static requestHeaders() {
     const cachedLoginResponse = Authenticator.getLoginResponse()
-    return { 'Authorization': `Bearer ${cachedLoginResponse ? cachedLoginResponse.token : ''}` }
+    return {
+      'Authorization': `Bearer ${cachedLoginResponse ? cachedLoginResponse.token : ''}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  }
+
+  static request(method: HttpMethod, path: string, payload: any): Promise<*> {
+    const request = new Request(
+      `${AppConfigurationObject.apiHost}/api/v1/${path}`,
+      {
+        headers: this.requestHeaders(),
+        method: method,
+        body: payload ? JSON.stringify(payload) : null,
+      }
+    )
+    return fetch(request).then(response => {
+      return response.json()
+    })
+    .then(parsed => {
+      if (!parsed.success) {
+        return Promise.reject('API Error: ' + parsed.errorMessage)
+      }
+      return parsed.content
+    })
   }
 
   static getRequest(path: string): Promise<*> {
-    const request = new Request(
-      `${AppConfigurationObject.apiHost}/api/v1/${path}`,
-      {
-        headers: this.requestHeaders(),
-        method: 'GET',
-      }
-    )
-    return fetch(request).then(response => {
-      return response.json()
-    })
-    .then(parsed => {
-      if (!parsed.success) {
-        return Promise.reject('API Error: ' + parsed.errorMessage)
-      }
-      return parsed.content
-    })
+    return this.request('GET', path, null)
   }
 
   static postRequest(path: string, payload: any): Promise<*> {
-    const data = new FormData()
-    data.append('json', JSON.stringify(payload))
-    const request = new Request(
-      `${AppConfigurationObject.apiHost}/api/v1/${path}`,
-      {
-        headers: this.requestHeaders(),
-        method: 'POST',
-        body: data
-      }
-    )
-    return fetch(request).then(response => {
-      return response.json()
-    })
-    .then(parsed => {
-      if (!parsed.success) {
-        return Promise.reject('API Error: ' + parsed.errorMessage)
-      }
-      return parsed.content
-    })
+    return this.request('POST', path, payload)
+  }
+
+  static putRequest(path: string, payload: any): Promise<*> {
+    return this.request('PUT', path, payload)
+  }
+
+  static deleteRequest(path: string): Promise<*> {
+    return this.request('DELETE', path, null)
   }
 
   static login(facebookAccessToken: string): Promise<LoginResponse> {
@@ -97,8 +106,8 @@ export default class Api {
     return this.getRequest(path)
   }
 
-  static createOwnTrip(payload: CreateOwnTripPayload): Promise<CreateTripResponse> {
-    const path = 'trip/me'
+  static createTrip(payload: CreateTripPayload): Promise<CreateTripResponse> {
+    const path = 'trip'
     return this.postRequest(path, payload)
   }
 

@@ -19,11 +19,17 @@ function treatAsUTC(date: Date): Date {
   return result
 }
 
-function daysBetween(startDate: Date, endDate: Date): number {
+export function daysBetween(startDate: Date, endDate: Date): number {
   const millisecondsPerDay = 24 * 60 * 60 * 1000
-  return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay
+  return Math.round((treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay)
 }
 
 export function daysUntil(date: Date): number {
   return daysBetween(new Date(), date)
+}
+
+export function dateByAddingDays(date: Date, days: number): Date {
+  const result = new Date(date.valueOf())
+  result.setDate(date.getDate() + days)
+  return result
 }

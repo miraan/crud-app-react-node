@@ -17,6 +17,14 @@ export default class Authenticator {
       return JSON.parse(jsonString)
     }
 
+    static getLoginResponseX(): LoginResponse {
+      const jsonString = sessionStorage.getItem(loginResponseKey)
+      if (!jsonString) {
+        throw new Error('getLoginResponseX error: no cached login response')
+      }
+      return JSON.parse(jsonString)
+    }
+
     static logIn(loginResponse: LoginResponse) {
       sessionStorage.setItem(loginResponseKey, JSON.stringify(loginResponse))
     }
