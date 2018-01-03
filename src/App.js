@@ -1,9 +1,12 @@
 // @flow
 
-import React, { Component } from 'react'
+import React from 'react'
 import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap'
 
-export default class App extends Component {
+type Props = {}
+type State = {}
+
+export default class App extends React.Component<Props, State> {
   render() {
     return (
       <div>
