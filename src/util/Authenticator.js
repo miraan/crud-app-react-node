@@ -1,13 +1,27 @@
 // @flow
 
-const tokenKey = 'token'
+import type { LoginResponse } from './Api'
+
+const loginResponseKey = 'loginResponse'
 
 export default class Authenticator {
     static isLoggedIn() {
-      return !!sessionStorage.getItem(tokenKey)
+      return !!this.getLoginResponse()
+    }
+
+    static getLoginResponse(): ?LoginResponse {
+      const jsonString = sessionStorage.getItem(loginResponseKey)
+      if (!jsonString) {
+        return null
+      }
+      return JSON.parse(jsonString)
+    }
+
+    static logIn(loginResponse: LoginResponse) {
+      sessionStorage.setItem(loginResponseKey, JSON.stringify(loginResponse))
     }
 
     static logOut() {
-      sessionStorage.removeItem(tokenKey)
+      sessionStorage.removeItem(loginResponseKey)
     }
 }

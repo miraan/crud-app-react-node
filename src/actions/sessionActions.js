@@ -1,5 +1,10 @@
 // @flow
 
+import Authenticator from '../util/Authenticator'
+import Api from '../util/Api'
+
+import type { Dispatch } from '.'
+
 export type SessionAction = LoginSuccessAction | LogOutAction
 
 type LoginSuccessAction = {
@@ -18,4 +23,17 @@ export function loginSuccess(): LoginSuccessAction {
 
 export function logOut(): LogOutAction {
   return { type: 'LOG_OUT' }
+}
+
+export function login(facebookAccessToken: string) {
+  return function(dispatch: Dispatch) {
+    Api.login(facebookAccessToken).then(loginResponse => {
+      Authenticator.logIn(loginResponse)
+      dispatch(loginSuccess())
+    })
+    .catch(error => {
+      // TODO: dispatch error action
+      throw(error)
+    })
+  }
 }
