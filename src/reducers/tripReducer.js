@@ -12,7 +12,7 @@ export default function tripReducer(
   action: TripAction
 ) {
     switch (action.type) {
-      case 'GET_OWN_TRIPS_SUCCESS':
+      case 'GET_TRIPS_SUCCESS':
         return action.trips
       case 'CREATE_TRIP_SUCCESS':
         return [

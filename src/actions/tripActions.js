@@ -5,18 +5,19 @@ import history from '../util/history'
 
 import type { Dispatch } from '.'
 import type { Trip, CreateTripPayload, UpdateTripPayload } from '../util/Api'
+import Authenticator from '../util/Authenticator'
 
 export type TripAction =
-  GetOwnTripsSuccessAction |
+  GetTripsSuccessAction |
   CreateTripSuccessAction |
   UpdateTripSuccessAction |
   DeleteTripSuccessAction
 
-type GetOwnTripsSuccessAction = {
-  type: GetOwnTripsSuccessActionType,
+type GetTripsSuccessAction = {
+  type: GetTripsSuccessActionType,
   trips: Array<Trip>,
 }
-type GetOwnTripsSuccessActionType = 'GET_OWN_TRIPS_SUCCESS'
+type GetTripsSuccessActionType = 'GET_TRIPS_SUCCESS'
 
 type CreateTripSuccessAction = {
   type: CreateTripSuccessActionType,
@@ -36,9 +37,9 @@ type DeleteTripSuccessAction = {
 }
 type DeleteTripSuccessActionType = 'DELETE_TRIP_SUCCESS'
 
-export function getOwnTripsSuccess(trips: Array<Trip>): GetOwnTripsSuccessAction {
+export function getTripsSuccess(trips: Array<Trip>): GetTripsSuccessAction {
   return {
-    type: 'GET_OWN_TRIPS_SUCCESS',
+    type: 'GET_TRIPS_SUCCESS',
     trips: trips
   }
 }
@@ -64,10 +65,12 @@ export function deleteTripSuccess(trip: Trip): DeleteTripSuccessAction {
   }
 }
 
-export function getOwnTrips() {
+export function getTrips() {
   return function(dispatch: Dispatch) {
-    Api.getOwnTrips().then(getOwnTripsResponse => {
-      dispatch(getOwnTripsSuccess(getOwnTripsResponse.trips))
+    (Authenticator.getLoginResponseX().user.level >= 3
+    ? Api.getOwnTrips() : Api.getAllTrips())
+    .then(getTripsResponse => {
+      dispatch(getTripsSuccess(getTripsResponse.trips))
     })
     .catch(error => {
       // TODO: dispatch error action instead
@@ -110,7 +113,7 @@ export function deleteTrip(tripId: string) {
   return function(dispatch: Dispatch) {
     Api.deleteTrip(tripId).then(deleteTripResponse => {
       console.log(deleteTripResponse)
-      history.push('/ownTrips')
+      history.push('/trips')
       dispatch(deleteTripSuccess(deleteTripResponse.trip))
     })
     .catch(error => {

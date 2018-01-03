@@ -19,7 +19,7 @@ class LoginPage extends React.Component<Props, State> {
   render = () => {
     if (Authenticator.isLoggedIn()) {
       return (
-        <Redirect to='/ownTrips' />
+        <Redirect to='/trips' />
       )
     }
     return (

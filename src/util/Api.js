@@ -35,7 +35,7 @@ export type LoginResponse = {
   user: User,
 }
 
-type GetOwnTripsResponse = {
+type GetTripsResponse = {
   trips: Array<Trip>
 }
 
@@ -105,8 +105,13 @@ export default class Api {
     return this.getRequest(path)
   }
 
-  static getOwnTrips(): Promise<GetOwnTripsResponse> {
+  static getOwnTrips(): Promise<GetTripsResponse> {
     const path = `trip/me`
+    return this.getRequest(path)
+  }
+
+  static getAllTrips(): Promise<GetTripsResponse> {
+    const path = `trip`
     return this.getRequest(path)
   }
 

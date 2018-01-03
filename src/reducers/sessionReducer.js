@@ -15,7 +15,7 @@ export default function sessionReducer(
 ) {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-      history.push('/ownTrips')
+      history.push('/trips')
       return Authenticator.isLoggedIn()
     case 'LOG_OUT':
       history.push('/')

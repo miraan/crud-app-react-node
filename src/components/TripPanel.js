@@ -92,7 +92,7 @@ class TripPanel extends React.Component<Props, State> {
                 Delete
               </Button>
               <Button
-                onClick={() => history.push('/ownTrips/new')}>
+                onClick={() => history.push('/trips/new')}>
                 Create New Trip
               </Button>
             </ButtonGroup>

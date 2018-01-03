@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import Authenticator from '../util/Authenticator'
 import history from '../util/history'
 import LoginPage from './LoginPage'
-import OwnTripsPage from './OwnTripsPage'
+import TripsPage from './TripsPage'
 
 type Props = {}
 type State = {}
@@ -30,8 +30,8 @@ export default class App extends React.Component<Props, State> {
                   <LinkContainer to='/'>
                     <NavItem eventKey={1}>Home</NavItem>
                   </LinkContainer>
-                  <LinkContainer to='/ownTrips'>
-                    <NavItem eventKey={2}>Own Trips</NavItem>
+                  <LinkContainer to='/trips'>
+                    <NavItem eventKey={2}>Trips</NavItem>
                   </LinkContainer>
                   <NavItem eventKey={3} onSelect={this._logOut}>Log Out</NavItem>
                 </Nav>
@@ -40,7 +40,7 @@ export default class App extends React.Component<Props, State> {
           </Grid>
         </Navbar>
         <Route exact path='/' component={LoginPage} />
-        <Route path='/ownTrips' component={OwnTripsPage} />
+        <Route path='/trips' component={TripsPage} />
       </div>
     </Router>
   )

@@ -22,7 +22,7 @@ type Props = {
 }
 type State = {}
 
-class OwnTripsPage extends React.Component<Props, State> {
+class TripsPage extends React.Component<Props, State> {
   render = () => {
     if (!Authenticator.isLoggedIn()) {
       return (
@@ -35,7 +35,7 @@ class OwnTripsPage extends React.Component<Props, State> {
           <Row>
             <Col md={12}>
               <hr />
-              <h1>Own Trips</h1>
+              <h1>Trips</h1>
               <hr />
             </Col>
           </Row>
@@ -91,7 +91,7 @@ class OwnTripsPage extends React.Component<Props, State> {
   )
 
   componentDidMount = () => (
-    this.props.actions.getOwnTrips()
+    this.props.actions.getTrips()
   )
 }
 
@@ -107,4 +107,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OwnTripsPage)
+export default connect(mapStateToProps, mapDispatchToProps)(TripsPage)
