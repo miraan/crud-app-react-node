@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Panel, Button, ButtonGroup, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
-import CreateReactClass from 'create-react-class'
 import DatePicker from 'react-bootstrap-date-picker'
 
 import type { CreateTripPayload } from '../util/Api'

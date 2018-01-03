@@ -2,7 +2,6 @@
 
 import React from 'react'
 import TripForm from './TripForm'
-import Authenticator from '../util/Authenticator'
 import { daysBetween } from '../util/dates'
 import { Panel, Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { dateToString } from '../util/dates'

@@ -3,8 +3,6 @@
 import Authenticator from './Authenticator'
 import AppConfigurationObject from '../configuration'
 
-type ToOptionalType = <V>(V) => ?V
-
 type User = {
   id: string,
   firstName: string,

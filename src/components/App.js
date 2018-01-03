@@ -9,8 +9,6 @@ import history from '../util/history'
 import LoginPage from './LoginPage'
 import OwnTripsPage from './OwnTripsPage'
 
-import type { ApplicationState } from '../reducers'
-
 type Props = {}
 type State = {}
 
