@@ -1,11 +1,13 @@
 // @flow
 
+const tokenKey = 'token'
+
 export default class Authenticator {
     static isLoggedIn() {
-      return !!sessionStorage.token
+      return !!sessionStorage.getItem(tokenKey)
     }
 
     static logOut() {
-      sessionStorage.removeItem('token')
+      sessionStorage.removeItem(tokenKey)
     }
 }
