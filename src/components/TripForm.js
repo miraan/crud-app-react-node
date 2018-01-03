@@ -8,15 +8,17 @@ import DatePicker from 'react-bootstrap-date-picker'
 import type { CreateTripPayload } from '../util/Api'
 
 export type FormGroupValidationState = 'success' | 'error'
-export type CreateTripPayloadKey = 'destination' | 'startDate' | 'endDate' | 'comment' | 'userId'
+export type TripPayloadKey = 'destination' | 'startDate' | 'endDate' | 'comment' | 'userId'
 
 type Props = {
-  validationStateForField: CreateTripPayloadKey => FormGroupValidationState,
+  validationStateForField: TripPayloadKey => FormGroupValidationState,
   payload: CreateTripPayload,
-  handleChange: (CreateTripPayloadKey, value: string) => void,
+  handleChange: (TripPayloadKey, value: string) => void,
   onSubmitButtonClick: () => void,
   isSubmitButtonDisabled: boolean,
-  creatingOwnTrip: boolean,
+  showUserIdField: boolean,
+  editing: boolean,
+  onCancelButtonClick: () => void,
 }
 
 const TripForm = ({
@@ -25,13 +27,14 @@ const TripForm = ({
   handleChange,
   onSubmitButtonClick,
   isSubmitButtonDisabled,
-  creatingOwnTrip,
+  showUserIdField,
+  editing,
+  onCancelButtonClick,
 } : Props) => (
-  <Panel header={<h3>Create A Trip</h3>}>
+  <Panel header={<h3>{editing ? 'Edit Trip' : 'Create A Trip'}</h3>}>
     <form>
-      {creatingOwnTrip
-        ? null
-        : (<FormGroup
+      {showUserIdField
+        ? (<FormGroup
             controlId='formBasicText'
             validationState={validationStateForField('userId')}>
             <ControlLabel>User ID</ControlLabel>
@@ -43,6 +46,7 @@ const TripForm = ({
             <FormControl.Feedback />
             <HelpBlock>Enter the ID of the user who will own this new trip.</HelpBlock>
           </FormGroup>)
+        : null
       }
       <FormGroup
         controlId='formBasicText'
@@ -92,8 +96,15 @@ const TripForm = ({
       bsStyle='primary'
       onClick={onSubmitButtonClick}
       disabled={isSubmitButtonDisabled}>
-      Create
+      {editing ? 'Save' : 'Create'}
     </Button>
+    {editing
+    ? (<Button
+        onClick={onCancelButtonClick}>
+        Cancel
+      </Button>)
+    : null
+    }
   </Panel>
 )
 

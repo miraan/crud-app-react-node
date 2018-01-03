@@ -27,12 +27,10 @@ export type CreateTripPayload = $Diff<Trip, {
   id: string,
 }>
 
-export type UpdateTripPayload = {
-  ...$ObjMap<$Diff<Trip, {
-    id: string,
-    userId: string,
-  }>, ToOptionalType>
-}
+export type UpdateTripPayload = $Diff<Trip, {
+  id: string,
+  userId: string,
+}>
 
 export type LoginResponse = {
   token: string,
@@ -44,6 +42,14 @@ type GetOwnTripsResponse = {
 }
 
 type CreateTripResponse = {
+  trip: Trip
+}
+
+type UpdateTripResponse = {
+  trip: Trip
+}
+
+type DeleteTripResponse = {
   trip: Trip
 }
 
@@ -109,6 +115,16 @@ export default class Api {
   static createTrip(payload: CreateTripPayload): Promise<CreateTripResponse> {
     const path = 'trip'
     return this.postRequest(path, payload)
+  }
+
+  static updateTrip(tripId: string, payload: UpdateTripPayload): Promise<UpdateTripResponse> {
+    const path = 'trip/' + tripId
+    return this.putRequest(path, payload)
+  }
+
+  static deleteTrip(tripId: string): Promise<DeleteTripResponse> {
+    const path = 'trip/' + tripId
+    return this.deleteRequest(path)
   }
 
 }

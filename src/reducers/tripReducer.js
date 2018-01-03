@@ -19,6 +19,17 @@ export default function tripReducer(
           ...state,
           action.trip
         ]
+      case 'UPDATE_TRIP_SUCCESS':
+        const updatedTrip: Trip = action.trip
+        return [
+          ...state.filter(trip => trip.id !== updatedTrip.id),
+          action.trip
+        ]
+      case 'DELETE_TRIP_SUCCESS':
+        const deletedTrip: Trip = action.trip
+        return [
+          ...state.filter(trip => trip.id !== deletedTrip.id)
+        ]
       default:
         return state
     }

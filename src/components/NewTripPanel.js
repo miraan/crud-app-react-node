@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import * as tripActions from '../actions/tripActions'
 
 import type { CreateTripPayload } from '../util/Api'
-import type { FormGroupValidationState, CreateTripPayloadKey } from './TripForm'
+import type { FormGroupValidationState, TripPayloadKey } from './TripForm'
 
 type Props = {
   actions: any,
@@ -36,12 +36,14 @@ class NewTripPanel extends React.Component<Props, State> {
       handleChange={this._handleChange}
       onSubmitButtonClick={this._onSubmit}
       isSubmitButtonDisabled={!this._isPayloadValid()}
-      creatingOwnTrip={Authenticator.getLoginResponseX().user.level < 3}
+      showUserIdField={Authenticator.getLoginResponseX().user.level > 2}
+      editing={false}
+      onCancelButtonClick={() => {}}
     />
   )
 
-  _validationStateForField: CreateTripPayloadKey => FormGroupValidationState =
-  (key: CreateTripPayloadKey) => {
+  _validationStateForField: TripPayloadKey => FormGroupValidationState =
+  (key: TripPayloadKey) => {
     switch (key) {
       case 'destination':
       case 'startDate':
@@ -55,7 +57,7 @@ class NewTripPanel extends React.Component<Props, State> {
     }
   }
 
-  _handleChange = (key: CreateTripPayloadKey, value: string) => {
+  _handleChange = (key: TripPayloadKey, value: string) => {
     const payload = this.state.payload
     payload[key] = value
     this.setState({ payload: payload })
