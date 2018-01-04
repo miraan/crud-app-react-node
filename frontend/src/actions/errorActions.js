@@ -1,7 +1,5 @@
 // @flow
 
-import type { Dispatch } from '.'
-
 export type ErrorAction = DisplayErrorAction | ClearErrorAction
 
 export type DisplayErrorAction = {
