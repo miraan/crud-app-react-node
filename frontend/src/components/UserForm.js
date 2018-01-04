@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { Panel, Button, ButtonGroup, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
-import DatePicker from 'react-bootstrap-date-picker'
 
 import type { CreateUserPayload } from '../util/Api'
 
@@ -97,7 +96,7 @@ const UserForm = ({
         <FormControl
           componentClass='select'
           placeholder='Level'
-          onChange={(e) => handleChange('level', parseInt(e.target.value))}>
+          onChange={(e) => handleChange('level', parseInt(e.target.value, 10))}>
           {[...Array(maxLevel).keys()].map(key => (
             <option
               value={key + 1}
