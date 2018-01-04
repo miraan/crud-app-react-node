@@ -41,7 +41,8 @@ const TripForm = ({
               type='text'
               value={payload.userId}
               placeholder='Enter user ID'
-              onChange={(e) => handleChange('userId', e.target.value)} />
+              onChange={(e) => handleChange('userId', e.target.value)}
+              disabled={editing} />
             <FormControl.Feedback />
             <HelpBlock>Enter the ID of the user who will own this new trip.</HelpBlock>
           </FormGroup>)

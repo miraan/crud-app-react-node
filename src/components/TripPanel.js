@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as tripActions from '../actions/tripActions'
 import history from '../util/history'
+import Authenticator from '../util/Authenticator'
 
 import type { Trip, CreateTripPayload } from '../util/Api'
 import type { ApplicationState } from '../reducers'
@@ -43,6 +44,16 @@ class TripPanel extends React.Component<Props, State> {
   _renderViewPanel = () => (
     <Panel header={<h3>{this.props.trip.destination}</h3>}>
       <Grid>
+        {Authenticator.getLoginResponseX().user.level >= 3
+        ? <Row>
+            <Col md={4}>
+              <p>User ID:</p>
+            </Col>
+            <Col md={8}>
+              <p>{this.props.trip.userId}</p>
+            </Col>
+          </Row>
+        : null}
         <Row>
           <Col md={4}>
             <p>Destination:</p>
@@ -84,7 +95,7 @@ class TripPanel extends React.Component<Props, State> {
           <Col md={12}>
             <ButtonGroup bsSize='large'>
               <Button
-                onClick={() => this.setState({ isEditing: true })}>
+                onClick={() => this._enableEditMode()}>
                 Edit
               </Button>
               <Button
@@ -109,7 +120,7 @@ class TripPanel extends React.Component<Props, State> {
       handleChange={this._handleChange}
       onSubmitButtonClick={this._onSubmit}
       isSubmitButtonDisabled={!this._isPayloadValid()}
-      showUserIdField={false}
+      showUserIdField={Authenticator.getLoginResponseX().user.level >= 3}
       editing={true}
       onCancelButtonClick={() => this.setState({ isEditing: false })}
     />
@@ -163,6 +174,31 @@ class TripPanel extends React.Component<Props, State> {
     daysBetween(
       new Date(this.state.payload.startDate),
       new Date(this.state.payload.endDate)) >= 0
+
+  _enableEditMode = () => {
+    this.setState({
+      isEditing: true,
+      payload: {
+        destination: this.props.trip.destination,
+        startDate: this.props.trip.startDate,
+        endDate: this.props.trip.endDate,
+        comment: this.props.trip.comment,
+        userId: this.props.trip.userId,
+      }
+    })
+  }
+
+  componentWillReceiveProps = (nextProps: Props) => {
+    this.setState({
+      payload: {
+        destination: nextProps.trip.destination,
+        startDate: nextProps.trip.startDate,
+        endDate: nextProps.trip.endDate,
+        comment: nextProps.trip.comment,
+        userId: nextProps.trip.userId,
+      }
+    })
+  }
 }
 
 function mapStateToProps(state: ApplicationState, ownProps: Props) {

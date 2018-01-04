@@ -2,10 +2,11 @@
 
 import Api from '../util/Api'
 import history from '../util/history'
+import Authenticator from '../util/Authenticator'
 
 import type { Dispatch } from '.'
 import type { Trip, CreateTripPayload, UpdateTripPayload } from '../util/Api'
-import Authenticator from '../util/Authenticator'
+
 
 export type TripAction =
   GetTripsSuccessAction |
@@ -83,6 +84,7 @@ export function createTrip(payload: CreateTripPayload) {
   return function(dispatch: Dispatch) {
     Api.createTrip(payload).then(createTripResponse => {
       dispatch(createTripSuccess(createTripResponse.trip))
+      history.push('/trips/' + createTripResponse.trip.id)
     })
     .catch(error => {
       // TODO: dispatch error action instead

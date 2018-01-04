@@ -41,7 +41,7 @@ class TripsPage extends React.Component<Props, State> {
           </Row>
           <Row>
             <Col md={4}>
-              <ListGroup>
+              <ListGroup className='scrollableListGroup'>
                 {this._renderTripListItems()}
               </ListGroup>
             </Col>
@@ -97,7 +97,15 @@ class TripsPage extends React.Component<Props, State> {
 
 function mapStateToProps(state: ApplicationState) {
   return {
-    trips: state.trips
+    trips: state.trips.sort((a, b) => {
+      if (a.id < b.id) {
+        return -1
+      }
+      if (b.id < a.id) {
+        return 1
+      }
+      return 0
+    })
   }
 }
 
