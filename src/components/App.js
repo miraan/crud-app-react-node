@@ -5,14 +5,22 @@ import { Grid, Navbar, NavItem, Nav, Row, Col } from 'react-bootstrap'
 import { Router, Route, Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import Authenticator from '../util/Authenticator'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import history from '../util/history'
 import LoginPage from './LoginPage'
 import TripsPage from './TripsPage'
+import * as sessionActions from '../actions/sessionActions'
 
-type Props = {}
+import type { ApplicationState } from '../reducers'
+
+type Props = {
+  isLoggedIn: boolean,
+  actions: any,
+}
 type State = {}
 
-export default class App extends React.Component<Props, State> {
+class App extends React.Component<Props, State> {
   render = () => (
     <Router history={history}>
       <div>
@@ -33,7 +41,12 @@ export default class App extends React.Component<Props, State> {
                   <LinkContainer to='/trips'>
                     <NavItem eventKey={2}>Trips</NavItem>
                   </LinkContainer>
-                  <NavItem eventKey={3} onSelect={this._logOut}>Log Out</NavItem>
+                  {this.props.isLoggedIn
+                    ? <NavItem eventKey={3} onSelect={this._logOut}>
+                        Log Out (Logged in as {Authenticator.getLoginResponseX().user.firstName})
+                      </NavItem>
+                    : null
+                  }
                 </Nav>
               </Col>
             </Row>
@@ -46,7 +59,20 @@ export default class App extends React.Component<Props, State> {
   )
 
   _logOut = () => {
-    Authenticator.logOut()
-    history.push('/')
+    this.props.actions.logOut()
   }
 }
+
+function mapStateToProps(state: ApplicationState) {
+  return {
+    isLoggedIn: state.session
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(sessionActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

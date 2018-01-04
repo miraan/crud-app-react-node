@@ -110,7 +110,7 @@ class TripsPage extends React.Component<Props, State> {
         <h2>Trip Itinerary</h2>
         <hr />
         {this.props.trips.map(trip => (
-          <Row>
+          <Row key={trip.id}>
             <Col md={12}>
               <p>
                 {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}: {trip.destination}

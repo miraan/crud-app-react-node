@@ -18,6 +18,7 @@ export default function sessionReducer(
       history.push('/trips')
       return Authenticator.isLoggedIn()
     case 'LOG_OUT':
+      Authenticator.logOut()
       history.push('/')
       return Authenticator.isLoggedIn()
     default:
