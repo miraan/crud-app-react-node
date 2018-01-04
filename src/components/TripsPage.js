@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { Jumbotron, Grid, Row, Col, ListGroup, ListGroupItem, Panel, Button } from 'react-bootstrap'
+import { Jumbotron, Grid, Row, Col, ListGroup, ListGroupItem, Panel, Button, FormControl } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
@@ -11,6 +11,7 @@ import * as tripActions from '../actions/tripActions'
 import { dateToString, daysUntil } from '../util/dates'
 import NewTripPanel from './NewTripPanel'
 import TripPanel from './TripPanel'
+import { dateByAddingMonths } from '../util/dates'
 
 import type { ApplicationState } from '../reducers'
 import type { Trip } from '../util/Api'
@@ -20,9 +21,15 @@ type Props = {
   trips: Array<Trip>,
   match: any,
 }
-type State = {}
+type State = {
+  searchText: string
+}
 
 class TripsPage extends React.Component<Props, State> {
+  state: State = {
+    searchText: ''
+  }
+
   render = () => {
     if (!Authenticator.isLoggedIn()) {
       return (
@@ -42,6 +49,11 @@ class TripsPage extends React.Component<Props, State> {
             </Row>
             <Row>
               <Col md={4}>
+                <FormControl
+                  type='text'
+                  value={this.state.searchText}
+                  placeholder='Search by destination'
+                  onChange={(e) => this.setState({ searchText: e.target.value })} />
                 <ListGroup className='scrollableListGroup'>
                   {this._renderTripListItems()}
                 </ListGroup>
@@ -76,7 +88,9 @@ class TripsPage extends React.Component<Props, State> {
         </ListGroupItem>
       )
     }
-    return this.props.trips.map(trip => (
+    return this.props.trips
+    .filter(trip => trip.destination.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
+    .map(trip => (
       <LinkContainer to={`${this.props.match.url}/${trip.id}`} key={trip.id}>
         <ListGroupItem header={trip.destination}>
           {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}
@@ -107,9 +121,12 @@ class TripsPage extends React.Component<Props, State> {
   _renderPrintContent = () => (
     <div id='printContent'>
       <Grid>
-        <h2>Trip Itinerary</h2>
+        <h2>Trip Itinerary for Next Month</h2>
         <hr />
-        {this.props.trips.map(trip => (
+        {this.props.trips
+          .filter(trip => new Date(trip.startDate) >= new Date() &&
+            new Date(trip.startDate) < dateByAddingMonths(new Date(), 1))
+          .map(trip => (
           <Row key={trip.id}>
             <Col md={12}>
               <p>

@@ -33,3 +33,9 @@ export function dateByAddingDays(date: Date, days: number): Date {
   result.setDate(date.getDate() + days)
   return result
 }
+
+export function dateByAddingMonths(date: Date, months: number): Date {
+  const result = new Date(date.valueOf())
+  result.setMonth(date.getMonth() + months)
+  return result
+}
