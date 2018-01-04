@@ -109,9 +109,12 @@ class UsersPage extends React.Component<Props, State> {
     </Panel>
   )
 
-  componentDidMount = () => (
+  componentDidMount = () => {
+    if (!Authenticator.isLoggedIn()) {
+      return
+    }
     this.props.actions.getUsers()
-  )
+  }
 }
 
 function mapStateToProps(state: ApplicationState) {

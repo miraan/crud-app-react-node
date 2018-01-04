@@ -2,6 +2,8 @@
 
 import * as http from 'http'
 import debug from 'debug'
+import express from 'express'
+import path from 'path'
 import ServerConfigurationObject from './configuration'
 import TokenStore from './stores/TokenStore'
 import DataStore from './stores/DataStore'
@@ -23,6 +25,13 @@ const dataStore: DataStore = new DataStore(logger)
 const facebookClient: FacebookClient = new FacebookClient()
 const app: Api = new Api(logger, tokenStore, dataStore, facebookClient)
 const port: string | number = normalizePort(process.env.PORT)
+
+app.express.use(express.static(path.join(__dirname, '..', '..', 'frontend', 'build')))
+
+app.express.get('/*', function(req: $Request, res: $Response) {
+  res.sendFile(path.join(__dirname, '..', '..', 'frontend', 'build', 'index.html'))
+})
+
 const server: Server = http.createServer(app.express)
 
 server.listen(port)

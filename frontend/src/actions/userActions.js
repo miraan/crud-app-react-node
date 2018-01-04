@@ -111,7 +111,7 @@ export function deleteUser(userId: string) {
       dispatch(deleteUserSuccess(deleteUserResponse.user))
     })
     .catch(error => {
-      console.log('deleteUser action error' + error)
+      console.log('deleteUser action error: ' + error)
     })
   }
 }

@@ -95,8 +95,9 @@ class TripsPage extends React.Component<Props, State> {
         <ListGroupItem header={trip.destination}>
           {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}
           <br />
-          ({daysUntil(new Date(trip.startDate))}
-          {daysUntil(new Date(trip.startDate)) > 0 ? ' Days Away' : ' Days Ago'})
+          {daysUntil(new Date(trip.startDate)) >= 0
+          ? 'Days Away: ' + daysUntil(new Date(trip.startDate))
+          : 'Past Trip'}
         </ListGroupItem>
       </LinkContainer>
     ))

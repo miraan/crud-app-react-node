@@ -126,10 +126,10 @@ class UserPanel extends React.Component<Props, State> {
               </Button>
               <Button
                 onClick={() => {
+                  this.props.actions.deleteUser(this.props.user.id)
                   if (this.props.user.id === Authenticator.getLoginResponseX().user.id) {
                     this.props.sessionActions.logOut()
                   }
-                  this.props.actions.deleteUser(this.props.user.id)
                 }}>
                 Delete
               </Button>
