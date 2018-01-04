@@ -1,7 +1,7 @@
 # Node.JS RESTful CRUD API with Facebook User Authentication
 
 This branch contains a Node.JS Express Server with Flow type-checking
-exposing a RESTful API with CRUD examples and user authentication using the
+exposing a RESTful API over HTTPS with CRUD examples and user authentication using the
 Facebook Graph API to verify Facebook access tokens sent from clients. Data
 storage is via MongoDB, and this project uses the mongoose npm package.
 
@@ -116,6 +116,8 @@ can be edited to configure the app. The object has the following Flow type:
 ```
 type ServerConfiguration = {
   defaultPort: number,
+  httpsKeyFilePath: string,
+  httpsCertificateFilePath: string,
   loggerPrefix: string,
   tokenExpireTimeSeconds: number,
   redisServerHost: string,
@@ -152,10 +154,3 @@ Clone the repository
 5. `npm start` to start the server
 6. Develop and remember to run `flow-typed install` after adding a new
 dependency with `npm install --save xxx`
-
-## React + Redux + Flow + Bootstrap + React Router frontend
-
-A corresponding Web frontend for this app, built with React, Redux, Flow, React Bootstrap
-and React Router, can be found here:
-
-https://github.com/miraan/react-redux-flow-bootstrap-router-frontend

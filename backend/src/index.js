@@ -1,9 +1,10 @@
 // @flow
 
-import * as http from 'http'
+import * as https from 'https'
 import debug from 'debug'
 import express from 'express'
 import path from 'path'
+import fs from 'fs'
 import ServerConfigurationObject from './configuration'
 import TokenStore from './stores/TokenStore'
 import DataStore from './stores/DataStore'
@@ -32,7 +33,10 @@ app.express.get('/*', function(req: $Request, res: $Response) {
   res.sendFile(path.join(__dirname, '..', '..', 'frontend', 'build', 'index.html'))
 })
 
-const server: Server = http.createServer(app.express)
+const server: Server = https.createServer({
+  key: fs.readFileSync(ServerConfigurationObject.httpsKeyFilePath).toString(),
+  cert: fs.readFileSync(ServerConfigurationObject.httpsCertificateFilePath).toString(),
+}, app.express)
 
 server.listen(port)
 server.on('error', onError)

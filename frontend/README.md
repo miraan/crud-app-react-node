@@ -33,13 +33,8 @@ src
 ## Usage
 
 1. Clone the repo
-2. Start the backend Node server (contained in this repo: https://github.com/miraan/node-flow-api-boilerplate)
-3. `npm start` to start the development server for this frontend
-4. Remember to run `flow-typed install` whenever you install an npm package
-
-## Node.JS + Express + Flow + MongoDB + Mongoose + Redis + Passport Bearer Token RESTful CRUD API Backend
-
-A corresponding Node.js Express RESTful API backend for this app, built with Node.JS, Flow, MongoDB, Mongoose,
-Redis, Passport Bearer Token Strategy can be found here:
-
-https://github.com/miraan/node-flow-api-boilerplate
+2. `npm install`
+3. Update `src/configuration.js`
+4. `npm start` to start the development server for this frontend
+5. Remember to run `flow-typed install` whenever you install an npm package
+6. `npm build` to produce optimised production build

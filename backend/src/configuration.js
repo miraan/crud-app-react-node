@@ -4,6 +4,8 @@ import type { ServerConfiguration } from './util/types'
 
 const ServerConfigurationObject: ServerConfiguration = {
   defaultPort: 3001,
+  httpsKeyFilePath: 'localhost.key',
+  httpsCertificateFilePath: 'localhost.crt',
   loggerPrefix: 'node-flow-api',
   tokenExpireTimeSeconds: 60 * 60 * 24 * 7,
   redisServerHost: '127.0.0.1',

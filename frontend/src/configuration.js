@@ -7,7 +7,7 @@ type AppConfiguration = {
 }
 
 const AppConfigurationObject: AppConfiguration = {
-  apiHost: 'http://localhost:3001',
+  apiHost: 'https://localhost:3001',
   facebookAppId: '419380475146250',
   facebookProfileFields: 'id,first_name,last_name,email',
 }

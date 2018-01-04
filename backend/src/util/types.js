@@ -47,6 +47,8 @@ export type UpdateTripPayload = {
 
 export type ServerConfiguration = {
   defaultPort: number,
+  httpsKeyFilePath: string,
+  httpsCertificateFilePath: string,
   loggerPrefix: string,
   tokenExpireTimeSeconds: number,
   redisServerHost: string,
