@@ -30,31 +30,41 @@ class TripsPage extends React.Component<Props, State> {
       )
     }
     return (
-      <Jumbotron>
-        <Grid>
-          <Row>
-            <Col md={12}>
-              <hr />
-              <h1>Trips</h1>
-              <hr />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={4}>
-              <ListGroup className='scrollableListGroup'>
-                {this._renderTripListItems()}
-              </ListGroup>
-            </Col>
-            <Col md={8}>
-              <Switch>
-                <Route exact path={this.props.match.url} render={this._renderDefaultPanel} />
-                <Route path={`${this.props.match.url}/new`} component={NewTripPanel} />
-                <Route path={`${this.props.match.url}/:tripId`} component={TripPanel} />
-              </Switch>
-            </Col>
-          </Row>
-        </Grid>
-      </Jumbotron>
+      <div>
+        <Jumbotron>
+          <Grid>
+            <Row>
+              <Col md={12}>
+                <hr />
+                <h1>Trips</h1>
+                <hr />
+              </Col>
+            </Row>
+            <Row>
+              <Col md={4}>
+                <ListGroup className='scrollableListGroup'>
+                  {this._renderTripListItems()}
+                </ListGroup>
+              </Col>
+              <Col md={8}>
+                <Row>
+                  <Col md={12}>
+                    <Switch>
+                      <Route exact path={this.props.match.url} render={this._renderDefaultPanel} />
+                      <Route path={`${this.props.match.url}/new`} component={NewTripPanel} />
+                      <Route path={`${this.props.match.url}/:tripId`} component={TripPanel} />
+                    </Switch>
+                  </Col>
+                  <Col md={12}>
+                    <Button onClick={window.print}>Print Itinerary</Button>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Grid>
+        </Jumbotron>
+        {this._renderPrintContent()}
+      </div>
     )
   }
 
@@ -92,6 +102,27 @@ class TripsPage extends React.Component<Props, State> {
 
   componentDidMount = () => (
     this.props.actions.getTrips()
+  )
+
+  _renderPrintContent = () => (
+    <div id='printContent'>
+      <Grid>
+        <h2>Trip Itinerary</h2>
+        <hr />
+        {this.props.trips.map(trip => (
+          <Row>
+            <Col md={12}>
+              <p>
+                {dateToString(new Date(trip.startDate))} to {dateToString(new Date(trip.endDate))}: {trip.destination}
+                <br />
+                Comment: {trip.comment}
+              </p>
+              <hr />
+            </Col>
+          </Row>
+        ))}
+      </Grid>
+    </div>
   )
 }
 
