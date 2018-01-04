@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux'
 import * as tripActions from '../actions/tripActions'
 import history from '../util/history'
 import Authenticator from '../util/Authenticator'
+import { Redirect } from 'react-router-dom'
 
 import type { Trip, CreateTripPayload } from '../util/Api'
 import type { ApplicationState } from '../reducers'
@@ -29,17 +30,24 @@ class TripPanel extends React.Component<Props, State> {
   state: State = {
     isEditing: false,
     payload: {
-      destination: this.props.trip.destination,
-      startDate: this.props.trip.startDate,
-      endDate: this.props.trip.endDate,
-      comment: this.props.trip.comment,
-      userId: this.props.trip.userId,
+      destination: this.props.trip ? this.props.trip.destination : '',
+      startDate: this.props.trip ? this.props.trip.startDate : '',
+      endDate: this.props.trip ? this.props.trip.endDate : '',
+      comment: this.props.trip ? this.props.trip.comment : '',
+      userId: this.props.trip ? this.props.trip.userId : '',
     }
   }
 
-  render = () => (
-    this.state.isEditing ? this._renderEditPanel() : this._renderViewPanel()
-  )
+  render = () => {
+    if (!this.props.trip) {
+      return (
+        <Redirect to='/trips' />
+      )
+    }
+    return (
+      this.state.isEditing ? this._renderEditPanel() : this._renderViewPanel()
+    )
+  }
 
   _renderViewPanel = () => (
     <Panel header={<h3>{this.props.trip.destination}</h3>}>
@@ -207,10 +215,6 @@ function mapStateToProps(state: ApplicationState, ownProps: Props) {
   }
   const tripId: string = ownProps.match.params.tripId
   const trip: ?Trip = state.trips.find(trip => trip.id === tripId)
-  if (!trip) {
-    throw new Error(`TripPanel mapStateToProps error: no trip with id ${tripId} found in state.`)
-  }
-  console.log(trip)
   return {
     trip: trip
   }

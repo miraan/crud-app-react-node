@@ -39,3 +39,7 @@ export function dateByAddingMonths(date: Date, months: number): Date {
   result.setMonth(date.getMonth() + months)
   return result
 }
+
+export function stripTimeFromDate(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}

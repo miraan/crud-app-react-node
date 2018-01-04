@@ -3,14 +3,19 @@
 import Authenticator from './Authenticator'
 import AppConfigurationObject from '../configuration'
 
-type User = {
+export type User = {
   id: string,
   firstName: string,
   lastName: string,
   email: string,
   facebookId: string,
+  facebookAccessToken: string,
   level: number,
 }
+
+export type CreateUserPayload = $Diff<User, {
+  id: string,
+}>
 
 export type Trip = {
   id: string,
@@ -42,14 +47,18 @@ type GetTripsResponse = {
 type CreateTripResponse = {
   trip: Trip
 }
+type UpdateTripResponse = CreateTripResponse
+type DeleteTripResponse = CreateTripResponse
 
-type UpdateTripResponse = {
-  trip: Trip
+type GetUsersResponse = {
+  users: Array<User>
 }
 
-type DeleteTripResponse = {
-  trip: Trip
+type CreateUserResponse = {
+  user: User
 }
+type UpdateUserResponse = CreateUserResponse
+type DeleteUserResponse = CreateUserResponse
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -130,4 +139,38 @@ export default class Api {
     return this.deleteRequest(path)
   }
 
+  static getOwnProfile(): Promise<GetUsersResponse> {
+    const path = `user/me`
+    return new Promise((resolve, reject) => {
+      this.getRequest(path).then(content => {
+        resolve({
+          users: [content.user]
+        })
+      })
+      .catch(error => {
+        reject(error)
+      })
+    })
+  }
+
+  static getAllUsers(): Promise<GetUsersResponse> {
+    const path = 'user'
+    return this.getRequest(path)
+  }
+
+  static createUser(payload: CreateUserPayload): Promise<CreateUserResponse> {
+    const path = 'user'
+    return this.postRequest(path, payload)
+  }
+
+  static updateUser(userId: string, payload: CreateUserPayload): Promise<UpdateUserResponse> {
+    const path = 'user/' + userId
+    return this.putRequest(path, payload)
+  }
+
+  static deleteUser(userId: string): Promise<DeleteUserResponse> {
+    const path = 'user/' + userId
+    return this.deleteRequest(path)
+  }
+  
 }

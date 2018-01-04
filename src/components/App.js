@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux'
 import history from '../util/history'
 import LoginPage from './LoginPage'
 import TripsPage from './TripsPage'
+import UsersPage from './UsersPage'
 import * as sessionActions from '../actions/sessionActions'
 
 import type { ApplicationState } from '../reducers'
@@ -34,26 +35,26 @@ class App extends React.Component<Props, State> {
                   </Navbar.Brand>
                   <Navbar.Toggle />
                 </Navbar.Header>
-                <Nav>
-                  <LinkContainer to='/'>
-                    <NavItem eventKey={1}>Home</NavItem>
-                  </LinkContainer>
-                  <LinkContainer to='/trips'>
-                    <NavItem eventKey={2}>Trips</NavItem>
-                  </LinkContainer>
-                  {this.props.isLoggedIn
-                    ? <NavItem eventKey={3} onSelect={this._logOut}>
-                        Log Out (Logged in as {Authenticator.getLoginResponseX().user.firstName})
-                      </NavItem>
-                    : null
-                  }
-                </Nav>
+                {this.props.isLoggedIn
+                ? <Nav>
+                    <LinkContainer to='/trips'>
+                      <NavItem eventKey={2}>Trips</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to='/users'>
+                      <NavItem eventKey={3}>Users</NavItem>
+                    </LinkContainer>
+                    <NavItem eventKey={4} onSelect={this._logOut}>
+                      Log Out (Logged in as {Authenticator.getLoginResponseX().user.firstName})
+                    </NavItem>
+                  </Nav>
+                : null}
               </Col>
             </Row>
           </Grid>
         </Navbar>
         <Route exact path='/' component={LoginPage} />
         <Route path='/trips' component={TripsPage} />
+        <Route path='/users' component={UsersPage} />
       </div>
     </Router>
   )

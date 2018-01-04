@@ -68,7 +68,7 @@ export function deleteTripSuccess(trip: Trip): DeleteTripSuccessAction {
 
 export function getTrips() {
   return function(dispatch: Dispatch) {
-    (Authenticator.getLoginResponseX().user.level >= 3
+    (Authenticator.getLoginResponseX().user.level < 3
     ? Api.getOwnTrips() : Api.getAllTrips())
     .then(getTripsResponse => {
       dispatch(getTripsSuccess(getTripsResponse.trips))
@@ -102,7 +102,6 @@ export function updateTrip(tripId: string, payload: CreateTripPayload) {
   }
   return function(dispatch: Dispatch) {
     Api.updateTrip(tripId, updatePayload).then(updateTripResponse => {
-      console.log(updateTripResponse)
       dispatch(updateTripSuccess(updateTripResponse.trip))
     })
     .catch(error => {
@@ -114,7 +113,6 @@ export function updateTrip(tripId: string, payload: CreateTripPayload) {
 export function deleteTrip(tripId: string) {
   return function(dispatch: Dispatch) {
     Api.deleteTrip(tripId).then(deleteTripResponse => {
-      console.log(deleteTripResponse)
       history.push('/trips')
       dispatch(deleteTripSuccess(deleteTripResponse.trip))
     })

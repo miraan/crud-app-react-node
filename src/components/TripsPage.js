@@ -11,7 +11,7 @@ import * as tripActions from '../actions/tripActions'
 import { dateToString, daysUntil } from '../util/dates'
 import NewTripPanel from './NewTripPanel'
 import TripPanel from './TripPanel'
-import { dateByAddingMonths } from '../util/dates'
+import { dateByAddingMonths, stripTimeFromDate } from '../util/dates'
 
 import type { ApplicationState } from '../reducers'
 import type { Trip } from '../util/Api'
@@ -68,7 +68,7 @@ class TripsPage extends React.Component<Props, State> {
                     </Switch>
                   </Col>
                   <Col md={12}>
-                    <Button onClick={window.print}>Print Itinerary</Button>
+                    <Button onClick={window.print}>Print Travel Itinerary</Button>
                   </Col>
                 </Row>
               </Col>
@@ -124,7 +124,7 @@ class TripsPage extends React.Component<Props, State> {
         <h2>Trip Itinerary for Next Month</h2>
         <hr />
         {this.props.trips
-          .filter(trip => new Date(trip.startDate) >= new Date() &&
+          .filter(trip => new Date(trip.startDate) >= stripTimeFromDate(new Date()) &&
             new Date(trip.startDate) < dateByAddingMonths(new Date(), 1))
           .map(trip => (
           <Row key={trip.id}>
