@@ -115,9 +115,12 @@ class TripsPage extends React.Component<Props, State> {
     </Panel>
   )
 
-  componentDidMount = () => (
+  componentDidMount = () => {
+    if (!Authenticator.isLoggedIn()) {
+      return
+    }
     this.props.actions.getTrips()
-  )
+  }
 
   _renderPrintContent = () => (
     <div id='printContent'>

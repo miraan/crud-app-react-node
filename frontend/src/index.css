@@ -1,3 +1,9 @@
+#errorMessage {
+  padding-top: 65px;
+  margin-left: 17%;
+  margin-right: 17%;
+}
+
 .scrollableListGroup {
   overflow-y: scroll;
   height: 600px;

@@ -3,6 +3,7 @@
 import Api from '../util/Api'
 import history from '../util/history'
 import Authenticator from '../util/Authenticator'
+import * as errorActions from './errorActions'
 
 import type { Dispatch } from '.'
 import type { User, CreateUserPayload } from '../util/Api'
@@ -72,9 +73,10 @@ export function getUsers() {
     ? Api.getOwnProfile() : Api.getAllUsers())
     .then(getUsersResponse => {
       dispatch(getUsersSuccess(getUsersResponse.users))
+      dispatch(errorActions.clearError())
     })
     .catch(error => {
-      // TODO: dispatch error action instead
+      dispatch(errorActions.displayError('Get Users Error: ' + error))
       console.log('getUsers action error: ' + error)
     })
   }
@@ -84,10 +86,11 @@ export function createUser(payload: CreateUserPayload) {
   return function(dispatch: Dispatch) {
     Api.createUser(payload).then(createUserResponse => {
       dispatch(createUserSuccess(createUserResponse.user))
+      dispatch(errorActions.clearError())
       history.push('/users/' + createUserResponse.user.id)
     })
     .catch(error => {
-      // TODO: dispatch error action instead
+      dispatch(errorActions.displayError('Create User Error: ' + error))
       console.log('createUser action error: ' + error)
     })
   }
@@ -97,8 +100,10 @@ export function updateUser(userId: string, payload: CreateUserPayload) {
   return function(dispatch: Dispatch) {
     Api.updateUser(userId, payload).then(updateUserResponse => {
       dispatch(updateUserSuccess(updateUserResponse.user))
+      dispatch(errorActions.clearError())
     })
     .catch(error => {
+      dispatch(errorActions.displayError('Update User Error: ' + error))
       console.log('updateUser action error: ' + error)
     })
   }
@@ -109,8 +114,10 @@ export function deleteUser(userId: string) {
     Api.deleteUser(userId).then(deleteUserResponse => {
       history.push('/users')
       dispatch(deleteUserSuccess(deleteUserResponse.user))
+      dispatch(errorActions.clearError())
     })
     .catch(error => {
+      dispatch(errorActions.displayError('Delete User Error: ' + error))
       console.log('deleteUser action error: ' + error)
     })
   }

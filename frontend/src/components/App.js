@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { Grid, Navbar, NavItem, Nav, Row, Col } from 'react-bootstrap'
+import { Grid, Navbar, NavItem, Nav, Row, Col, Panel } from 'react-bootstrap'
 import { Router, Route, Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import Authenticator from '../util/Authenticator'
@@ -18,6 +18,7 @@ import type { ApplicationState } from '../reducers'
 type Props = {
   isLoggedIn: boolean,
   actions: any,
+  errorMessage: ?string,
 }
 type State = {}
 
@@ -52,6 +53,7 @@ class App extends React.Component<Props, State> {
             </Row>
           </Grid>
         </Navbar>
+        {this._renderErrorMessage()}
         <Route exact path='/' component={LoginPage} />
         <Route path='/trips' component={TripsPage} />
         <Route path='/users' component={UsersPage} />
@@ -62,11 +64,20 @@ class App extends React.Component<Props, State> {
   _logOut = () => {
     this.props.actions.logOut()
   }
+
+  _renderErrorMessage = () => this.props.errorMessage
+    ? <div id='errorMessage'>
+        <Panel header={'An Error Occurred'} bsStyle="danger">
+          {this.props.errorMessage}
+        </Panel>
+      </div>
+    : null
 }
 
 function mapStateToProps(state: ApplicationState) {
   return {
-    isLoggedIn: state.session
+    isLoggedIn: state.session,
+    errorMessage: state.error,
   }
 }
 

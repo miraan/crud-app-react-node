@@ -2,6 +2,7 @@
 
 import Authenticator from '../util/Authenticator'
 import Api from '../util/Api'
+import * as errorActions from './errorActions'
 
 import type { Dispatch } from '.'
 
@@ -30,10 +31,11 @@ export function login(facebookAccessToken: string) {
     Api.login(facebookAccessToken).then(loginResponse => {
       Authenticator.logIn(loginResponse)
       dispatch(loginSuccess())
+      dispatch(errorActions.clearError())
     })
     .catch(error => {
-      // TODO: dispatch error action
-      throw(error)
+      dispatch(errorActions.displayError('Login Error: ' + error))
+      console.log('login action error: ' + error)
     })
   }
 }
